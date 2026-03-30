@@ -1,20 +1,17 @@
 require("dotenv").config();
-const { Pool } = require("pg");
+const { createClient } = require("@supabase/supabase-js");
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false },
-  max: 20,
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000,
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY;
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  throw new Error("❌ SUPABASE_URL et SUPABASE_SERVICE_KEY sont requis dans .env");
+}
+
+const supabase = createClient(supabaseUrl, supabaseServiceKey, {
+  auth: { persistSession: false },
 });
 
-pool.on("connect", () => {
-  console.log("✅ Connexion PostgreSQL établie");
-});
+console.log("✅ Client Supabase initialisé");
 
-pool.on("error", (err) => {
-  console.error("❌ Erreur PostgreSQL :", err.message);
-});
-
-module.exports = pool;
+module.exports = supabase;
