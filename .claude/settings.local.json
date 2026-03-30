@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s http://localhost:5000/api/health)",
+      "Bash(lsof -ti:5000)",
+      "Bash(xargs kill:*)",
+      "Bash(lsof:*)",
+      "Bash(curl -s http://localhost:5001/api/health)",
+      "Bash(find /Users/ntekochris/Downloads/rhdp-communaute -name *.sql -o -name migration* -o -name schema*)",
+      "Bash(curl:*)",
+      "Bash(npm install:*)"
+    ]
+  }
+}
