@@ -258,4 +258,57 @@ router.put("/change-password", authMw, async (req, res) => {
   }
 });
 
+// ─────────────────────────────────────────────────────────────────────────
+// PUT /api/auth/complete-profile — Compléter le profil après inscription
+// ─────────────────────────────────────────────────────────────────────────
+router.put("/complete-profile", authMw, async (req, res) => {
+  try {
+    const {
+      motivations,
+      centres_interet,
+      talents,
+      talent_autre,
+      idee_pays,
+      ce_qui_enerve,
+    } = req.body;
+
+    if (!motivations?.length || !centres_interet?.length || !talents?.length) {
+      return res.status(400).json({
+        success: false,
+        message: "Motivations, centres d'intérêt et talents sont requis.",
+      });
+    }
+
+    await pool.query(
+      `UPDATE users SET
+        motivations      = $1,
+        centres_interet  = $2,
+        talents          = $3,
+        talent_autre     = $4,
+        idee_pays        = $5,
+        ce_qui_enerve    = $6,
+        profil_complete  = true
+       WHERE id = $7`,
+      [
+        motivations,
+        centres_interet,
+        talents,
+        talent_autre || null,
+        idee_pays    || null,
+        ce_qui_enerve || null,
+        req.user.id,
+      ]
+    );
+
+    return res.json({
+      success: true,
+      message: "Profil complété avec succès !",
+    });
+
+  } catch (err) {
+    console.error("Erreur complete-profile :", err.message);
+    return res.status(500).json({ success: false, message: "Erreur serveur." });
+  }
+});
+
 module.exports = router;
