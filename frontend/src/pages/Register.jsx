@@ -100,7 +100,7 @@ export default function Register() {
       };
       const { data } = await api.post("/auth/register", payload);
       login(data.token, data.user);
-      navigate("/dashboard");
+      navigate("/complete-profile");
     } catch (err) {
       setApiError(err.response?.data?.message || "Erreur lors de l'inscription.");
     } finally {

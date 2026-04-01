@@ -8,7 +8,7 @@ import Profile   from "./pages/Profile";
 import Articles  from "./pages/Articles";
 import ArticleDetail from "./pages/ArticleDetail";
 import Whatsapp  from "./pages/Whatsapp";
-
+import CompleteProfile from "./pages/CompleteProfile";
 // ── Route protégée (membre connecté) ─────────────────────────────────────
 function PrivateRoute({ children }) {
   const { user, loading } = useAuth();
@@ -39,6 +39,7 @@ function AppRoutes() {
       <Route path="/actualites" element={<PrivateRoute><Articles /></PrivateRoute>} />
       <Route path="/actualites/:id" element={<PrivateRoute><ArticleDetail /></PrivateRoute>} />
       <Route path="/communaute" element={<PrivateRoute><Whatsapp /></PrivateRoute>} />
+      <Route path="/complete-profile" element={<PrivateRoute><CompleteProfile /></PrivateRoute>} />
 
       <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
